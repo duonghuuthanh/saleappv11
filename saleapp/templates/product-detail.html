@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý sản phẩm</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+            rel="stylesheet" />
+    <link href="{{ url_for('static', filename='css/style.css') }}"
+          rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <img src="{{ url_for('static', filename=product.image) }}"
+                         alt="{{ product.name }}" />
+            </div>
+            <div class="col-md-6">
+                <h3>
+                    <ul>
+                        <li>{{ product.name }}</li>
+                        <li>{{ product.description }}</li>
+                        <li>{{ product.price }}</li>
+                    </ul>
+                </h3>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
