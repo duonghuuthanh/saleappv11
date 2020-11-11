@@ -1,4 +1,4 @@
-from flask import render_template, request
+from flask import render_template
 from saleapp import app, utils
 
 
@@ -11,15 +11,7 @@ def index():
 
 @app.route("/products")
 def product_list():
-    kw = request.args.get("kw")
-    cate_id = request.args.get("category_id")
-    from_price = request.args.get("from_price")
-    to_price = request.args.get("to_price")
-
-    products = utils.read_products(cate_id=cate_id,
-                                   kw=kw,
-                                   from_price=from_price,
-                                   to_price=to_price)
+    products = utils.read_data(path='data/products.json')
 
     return render_template('products.html',
                            products=products)
