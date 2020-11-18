@@ -35,9 +35,9 @@ def get_product_by_id(product_id):
             return p
 
 
-def add_user(email, username, password, avatar):
+def add_user(name, email, username, password, avatar):
     password = str(hashlib.md5(password.encode('utf-8')).hexdigest())
-    u = User(name="ABC",
+    u = User(name=name,
              email=email,
              username=username,
              password=password,

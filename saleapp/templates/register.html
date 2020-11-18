@@ -20,6 +20,13 @@
               action="{{ url_for('register') }}"
               enctype="multipart/form-data" >
             <div class="form-group">
+                <label for="name">Tên</label>
+                <input type="text"
+                       id="name"
+                       name="name"
+                       class="form-control" />
+            </div>
+            <div class="form-group">
                 <label for="email">Email</label>
                 <input type="email"
                        id="email"

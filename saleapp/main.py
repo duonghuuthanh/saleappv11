@@ -41,6 +41,7 @@ def product_detail(product_id):
 def register():
     err_msg = ''
     if request.method == 'POST':
+        name = request.form.get('name')
         email = request.form.get('email')
         username = request.form.get('username')
         password = request.form.get('password', '').strip()
@@ -52,7 +53,7 @@ def register():
             avatar.save(os.path.join(app.config['ROOT_PROJECT_PATH'],
                                      'static/', avatar_path))
 
-            if utils.add_user(email=email, username=username,
+            if utils.add_user(name=name, email=email, username=username,
                               password=password, avatar=avatar_path):
                 return redirect('/admin')
         else:
