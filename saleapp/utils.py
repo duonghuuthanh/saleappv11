@@ -1,4 +1,6 @@
-import json
+import json, hashlib
+from saleapp.models import User
+from saleapp import db
 
 
 def read_data(path='data/categories.json'):
@@ -31,3 +33,20 @@ def get_product_by_id(product_id):
     for p in products:
         if p["id"] == product_id:
             return p
+
+
+def add_user(email, username, password, avatar):
+    password = str(hashlib.md5(password.encode('utf-8')).hexdigest())
+    u = User(name="ABC",
+             email=email,
+             username=username,
+             password=password,
+             avatar=avatar)
+    try:
+        db.session.add(u)
+        db.session.commit()
+
+        return True
+    except Exception as ex:
+        print(ex)
+        return False

@@ -1,5 +1,9 @@
 {% extends 'admin/master.html' %}
 
 {% block body %}
-    {% include 'admin/login.html' %}
+    {% if current_user.is_authenticated %}
+        <h1 class="text-danger">Xin chào {{ current_user.username }}!</h1>
+    {% else %}
+        {% include 'admin/login.html' %}
+    {% endif %}
 {% endblock %}

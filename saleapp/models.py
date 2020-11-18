@@ -3,6 +3,7 @@ from sqlalchemy import Column, Integer, Float, \
 from sqlalchemy.orm import relationship
 from saleapp import db
 from datetime import datetime
+from flask_login import UserMixin
 from enum import Enum as UserEnum
 
 
@@ -40,14 +41,14 @@ class UserRole(UserEnum):
     ADMIN = 2
 
 
-class User(SaleBase):
+class User(SaleBase, UserMixin):
     __tablename__ = 'user'
 
     email = Column(String(50))
     username = Column(String(100), nullable=False)
     password = Column(String(100), nullable=False)
     avatar = Column(String(100))
-    active = Column(Boolean, default=True)
+    is_active = Column(Boolean, default=True)
     joined_date = Column(Date, default=datetime.now())
     user_role = Column(Enum(UserRole), default=UserRole.USER)
 
