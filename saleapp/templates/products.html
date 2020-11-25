@@ -7,6 +7,7 @@
             rel="stylesheet" />
     <link href="{{ url_for('static', filename='css/style.css') }}"
           rel="stylesheet" />
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </head>
 <body>
     <div class="container">
@@ -38,6 +39,7 @@
                 </div>
             </form>
         </div>
+        <h1 class="badge badge-primary">0</h1>
         <table class="table">
             <tr>
                 <th></th>
@@ -45,6 +47,7 @@
                 <th>Name</th>
                 <td>Description</td>
                 <td>Price</td>
+                <td></td>
             </tr>
             {% for p in products %}
             <tr>
@@ -58,6 +61,10 @@
                 </td>
                 <td>{{ p.description }}</td>
                 <td>{{ "{:,.1f}".format(p.price) }} VNĐ</td>
+                <td>
+                    <a href="javascript:;"
+                       onclick="addToCart({{ p.id }}, '{{ p.name }}', {{ p.price }})">Đặt hàng</a>
+                </td>
             </tr>
             {% endfor %}
         </table>

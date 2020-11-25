@@ -1,7 +1,7 @@
-from flask import render_template, request, redirect
+from flask import render_template, request, session, redirect, url_for, jsonify
 from saleapp import app, utils, login
 from saleapp.models import User
-from flask_login import login_user
+from flask_login import login_user, logout_user
 from saleapp.admin import *
 import hashlib, os
 
@@ -62,7 +62,7 @@ def register():
     return render_template('register.html', err_msg=err_msg)
 
 
-@app.route("/login", methods=['post'])
+@app.route("/login", methods=['get', 'post'])
 def login_usr():
     if request.method == 'POST':
         username = request.form.get('username')
@@ -74,14 +74,57 @@ def login_usr():
 
         if user:
             login_user(user=user)
+    elif request.method == 'GET':
+        print(request.url)
+        return render_template('login.html')
 
     return redirect('/admin')
+
+# @app.route('/user-login')
+# def user_login():
+#     return render_template('login.html')
+
+
+@app.route('/api/cart', methods=['post'])
+def add_to_cart():
+    if session and session.get('cart') is None:
+        session['cart'] = {}
+
+    data = request.json
+    product_id = str(data.get('id'))
+    product_name = data.get('name')
+    price = data.get('price')
+
+
+    if product_id in session['cart']: # nếu sp đã có trong giỏ
+        import pdb
+        pdb.set_trace()
+        quan = session['cart'][product_id]['quantity']
+        session['cart'][product_id]['quantity'] = int(quan) + 1
+    else: # sp chưa có trong giỏ
+        import pdb
+        pdb.set_trace()
+        session['cart'][product_id] = {
+            "id": product_id,
+            "name": product_name,
+            "price": price,
+            "quantity": 1
+        }
+
+    # quan, price = utils.cart_stats(session['cart'])
+
+    return jsonify({'quantity': 0, 'total_amount': 0, 'cart': session['cart']})
+
+
+@app.route('/logout')
+def logout_usr():
+    logout_user()
+    return redirect(url_for('index'))
 
 
 @login.user_loader
 def get_user(user_id):
     return User.query.get(user_id)
-
 
 
 if __name__ == "__main__":

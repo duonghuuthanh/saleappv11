@@ -11,6 +11,14 @@
 <body>
     <h1 class="text-center">BÁN HÀNG TRỰC TUYẾN</h1>
     <ul>
+        {% if current_user.is_authenticated %}
+            <li><a href="{{ url_for('logout_usr') }}">Đăng xuất</a></li>
+        {% else %}
+            <li><a href="{{ url_for('register') }}">Đăng ký</a></li>
+            <li><a href="{{ url_for('login_usr') }}">Đăng nhập</a></li>
+        {% endif %}
+    </ul>
+    <ul>
         <li><a href="{{ url_for('product_list') }}"> Tất cả </a></li>
         {% for cat in categories %}
         <li><a href="{{ url_for('product_list', category_id=cat.id) }}"> {{cat.name}} </a></li>
