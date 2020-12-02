@@ -11,7 +11,11 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="text-center">QUẢN LÝ SẢN PHẨM</h1>
+        <h1 class="text-center">
+            QUẢN LÝ SẢN PHẨM
+            <a class="badge badge-info"
+               href="{{ url_for('payment') }}" id="cart-info"></a>
+        </h1>
         <div>
             <form>
                 <div class="form-group">
@@ -39,7 +43,7 @@
                 </div>
             </form>
         </div>
-        <h1 class="badge badge-primary">0</h1>
+
         <table class="table">
             <tr>
                 <th></th>

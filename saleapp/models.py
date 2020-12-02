@@ -1,10 +1,10 @@
 from sqlalchemy import Column, Integer, Float, \
-    String, ForeignKey, Boolean, Date, Enum
+    String, ForeignKey, Boolean, Date, Enum, DateTime
 from sqlalchemy.orm import relationship
 from saleapp import db
-from datetime import datetime
 from flask_login import UserMixin
 from enum import Enum as UserEnum
+from datetime import datetime
 
 
 class SaleBase(db.Model):
@@ -35,6 +35,8 @@ class Product(SaleBase):
                          ForeignKey(Category.id),
                          nullable=False)
 
+    receipt_details = relationship('ReceiptDetail', backref='product', lazy=True)
+
 
 class UserRole(UserEnum):
     USER = 1
@@ -51,6 +53,25 @@ class User(SaleBase, UserMixin):
     is_active = Column(Boolean, default=True)
     joined_date = Column(Date, default=datetime.now())
     user_role = Column(Enum(UserRole), default=UserRole.USER)
+
+    receipts = relationship('Receipt', backref='user', lazy=True)
+
+
+class Receipt(db.Model):
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    created_date = Column(DateTime, default=datetime.today())
+    customer_id = Column(Integer, ForeignKey(User.id))
+
+    details = relationship('ReceiptDetail',
+                           backref='receipt', lazy=True)
+
+
+class ReceiptDetail(db.Model):
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    product_id = Column(Integer, ForeignKey(Product.id))
+    receipt_id = Column(Integer, ForeignKey(Receipt.id))
+    quantity = Column(Integer, default=0)
+    price = Column(Float, default=0)
 
 
 if __name__ == '__main__':

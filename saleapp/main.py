@@ -3,6 +3,7 @@ from saleapp import app, utils, login
 from saleapp.models import User
 from flask_login import login_user, logout_user
 from saleapp.admin import *
+from saleapp import decorator
 import hashlib, os
 
 
@@ -111,9 +112,8 @@ def add_to_cart():
     quan, price = utils.cart_stats(session['cart'])
 
     return jsonify({
-        'quantity': quan,
-        'total_amount': price,
-        'cart': session['cart']
+        'total_quantity': quan,
+        'total_amount': price
     })
 
 
@@ -121,6 +121,23 @@ def add_to_cart():
 def logout_usr():
     logout_user()
     return redirect(url_for('index'))
+
+
+@app.route('/payment', methods=['get', 'post'])
+@decorator.login_required
+def payment():
+    if request.method == 'POST':
+        if utils.add_receipt(session.get('cart')):
+            del session['cart']
+
+            return jsonify({"message": "Payment added!!!"})
+
+    quan, price = utils.cart_stats(session.get('cart'))
+    cart_info = {
+        'total_quantity': quan,
+        'total_amount': price
+    }
+    return render_template('payment.html', cart_info=cart_info)
 
 
 @login.user_loader
