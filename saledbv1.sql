@@ -70,6 +70,64 @@ INSERT INTO `product` VALUES (1,'iPhone 11',NULL,1111,'images/iphone11.png',1),(
 UNLOCK TABLES;
 
 --
+-- Table structure for table `receipt`
+--
+
+DROP TABLE IF EXISTS `receipt`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `receipt` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_date` datetime DEFAULT NULL,
+  `customer_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `customer_id` (`customer_id`),
+  CONSTRAINT `receipt_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `receipt`
+--
+
+LOCK TABLES `receipt` WRITE;
+/*!40000 ALTER TABLE `receipt` DISABLE KEYS */;
+INSERT INTO `receipt` VALUES (1,'2020-12-02 15:03:15',1);
+/*!40000 ALTER TABLE `receipt` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `receipt_detail`
+--
+
+DROP TABLE IF EXISTS `receipt_detail`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `receipt_detail` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `product_id` int(11) DEFAULT NULL,
+  `receipt_id` int(11) DEFAULT NULL,
+  `quantity` int(11) DEFAULT NULL,
+  `price` float DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `product_id` (`product_id`),
+  KEY `receipt_id` (`receipt_id`),
+  CONSTRAINT `receipt_detail_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
+  CONSTRAINT `receipt_detail_ibfk_2` FOREIGN KEY (`receipt_id`) REFERENCES `receipt` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `receipt_detail`
+--
+
+LOCK TABLES `receipt_detail` WRITE;
+/*!40000 ALTER TABLE `receipt_detail` DISABLE KEYS */;
+INSERT INTO `receipt_detail` VALUES (1,1,NULL,3,1111),(2,2,NULL,1,999),(3,3,NULL,1,6789);
+/*!40000 ALTER TABLE `receipt_detail` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `user`
 --
 
@@ -109,4 +167,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-25 15:03:33
+-- Dump completed on 2020-12-02 15:04:09

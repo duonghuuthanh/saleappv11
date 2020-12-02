@@ -23,5 +23,7 @@ function pay() {
         }
     }).then(res => res.json()).then(data => {
         alert(data.message);
+    }).catch(res => {
+        console.log(res);
     })
 }
