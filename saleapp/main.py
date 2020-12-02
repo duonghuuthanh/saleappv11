@@ -87,7 +87,7 @@ def login_usr():
 
 @app.route('/api/cart', methods=['post'])
 def add_to_cart():
-    if session and session.get('cart') is None:
+    if 'cart' not in session:
         session['cart'] = {}
 
     data = request.json
@@ -95,25 +95,26 @@ def add_to_cart():
     product_name = data.get('name')
     price = data.get('price')
 
-
-    if product_id in session['cart']: # nếu sp đã có trong giỏ
-        import pdb
-        pdb.set_trace()
-        quan = session['cart'][product_id]['quantity']
-        session['cart'][product_id]['quantity'] = int(quan) + 1
+    cart = session['cart']
+    if product_id in cart: # nếu sp đã có trong giỏ
+        quan = cart[product_id]['quantity']
+        cart[product_id]['quantity'] = int(quan) + 1
     else: # sp chưa có trong giỏ
-        import pdb
-        pdb.set_trace()
-        session['cart'][product_id] = {
+        cart[product_id] = {
             "id": product_id,
             "name": product_name,
             "price": price,
             "quantity": 1
         }
 
-    # quan, price = utils.cart_stats(session['cart'])
+    session['cart'] = cart
+    quan, price = utils.cart_stats(session['cart'])
 
-    return jsonify({'quantity': 0, 'total_amount': 0, 'cart': session['cart']})
+    return jsonify({
+        'quantity': quan,
+        'total_amount': price,
+        'cart': session['cart']
+    })
 
 
 @app.route('/logout')
